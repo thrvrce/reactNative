@@ -1,8 +1,9 @@
 import Xiaomi from '../../../Img/Xiaomi.png';
 import Oppo from '../../../Img/Oppo.png';
 import Iphone from '../../../Img/Iphone.png';
+import {ProductProps} from './Product';
 
-export const productsMocks = [
+export const productsMocks: ProductProps[] = [
   {
     name: 'Xiaomi Mi A3',
     imgSrc: Xiaomi,

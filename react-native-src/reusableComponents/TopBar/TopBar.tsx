@@ -1,15 +1,21 @@
-import React, {FC} from 'react';
+import React, {FC, ReactElement} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import BurgerMenuIcon from '../../../icons/BurgerMenuIcon.svg';
-import BucketIcon from '../../../icons/BucketIcon.svg';
 
-export const TopBar: FC = () => (
-  <View style={styles.topBarWrapper}>
-    <BurgerMenuIcon />
-    <Text style={styles.topBarText}>Ecommerce Store</Text>
-    <BucketIcon />
-  </View>
-);
+interface TopBarProps {
+  leftBlock?: ReactElement | ReactElement[];
+  text?: string;
+  rightBlock?: ReactElement | ReactElement[];
+}
+export const TopBar: FC<TopBarProps> = props => {
+  const {leftBlock, text, rightBlock} = props;
+  return (
+    <View style={styles.topBarWrapper}>
+      <View style={styles.block}>{leftBlock}</View>
+      <Text style={styles.topBarText}>{text}</Text>
+      <View style={styles.block}>{rightBlock}</View>
+    </View>
+  );
+};
 
 export const styles = StyleSheet.create({
   topBarWrapper: {
@@ -28,5 +34,9 @@ export const styles = StyleSheet.create({
     lineHeight: 24,
     letterSpacing: 0.15,
     fontWeight: '500',
+  },
+  block: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

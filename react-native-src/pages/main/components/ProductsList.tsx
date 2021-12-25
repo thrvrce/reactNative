@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {View, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import {Product} from './Product';
+import {Product, ProductProps} from './Product';
 
-export const ProductsList = props => {
+interface IProductsListProps {
+  products: ProductProps[];
+}
+
+export const ProductsList: FC<IProductsListProps> = props => {
   const {products} = props;
   return (
     <SafeAreaView>

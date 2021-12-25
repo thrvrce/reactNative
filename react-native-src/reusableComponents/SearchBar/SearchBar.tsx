@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
-import {TextInput, View} from 'react-native';
-import {StyleSheet} from 'react-native';
+import {TextInput, View, StyleSheet} from 'react-native';
 import SearchIcon from '../../../icons/SearchIcon.svg';
 
 export const SearchBar: FC = () => {
