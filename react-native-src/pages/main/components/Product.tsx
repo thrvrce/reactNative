@@ -1,27 +1,32 @@
 import React, {FC} from 'react';
-import {Text, View, Image, StyleSheet, ImageProps} from 'react-native';
+import {Text, View, Image, StyleSheet} from 'react-native';
 import {Prices} from '../../../reusableComponents/Prices/Prices';
 
-export interface ProductProps {
-  imgSrc: ImageProps;
+export interface IProduct {
+  id: string;
   name: string;
-  sourcePrice: number;
-  priceDiffPercents: number;
-  priceDiff: number;
+  description: string;
+  imgSrc: string;
+  price: number;
+  compareAtPrice: number;
 }
 
-export const Product: FC<ProductProps> = props => {
-  const {imgSrc, name, sourcePrice, priceDiffPercents, priceDiff} = props;
+interface IProductProps extends IProduct {}
+
+export const Product: FC<IProductProps> = props => {
+  const {imgSrc, name, price, compareAtPrice, id} = props;
 
   return (
     <View style={styles.productWrapper}>
-      <Image style={styles.image} source={imgSrc} />
-      <Text style={styles.commonText}>{name}</Text>
-      <Prices
-        sourcePrice={sourcePrice}
-        priceDiffPercents={priceDiffPercents}
-        priceDiff={priceDiff}
+      <Image
+        style={styles.image}
+        source={{
+          uri: `${imgSrc}/${styles.image.width}/?random=${id}`,
+        }}
       />
+
+      <Text style={styles.commonText}>{name}</Text>
+      <Prices price={price} compareAtPrice={compareAtPrice} />
     </View>
   );
 };
@@ -30,11 +35,12 @@ const styles = StyleSheet.create({
   productWrapper: {
     padding: 5,
     backgroundColor: '#FFFFFF',
-    height: 160,
+    minHeight: 160,
     margin: 10,
     shadowColor: 'rgba(0, 0, 0, 0.25)',
     elevation: 10,
     borderRadius: 5,
+    width: 158,
   },
   image: {
     width: 100,

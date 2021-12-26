@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import {View, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
-import {Product, ProductProps} from './Product';
+import {Product, IProduct} from './Product';
 
 interface IProductsListProps {
-  products: ProductProps[];
+  products: IProduct[];
 }
 
 export const ProductsList: FC<IProductsListProps> = props => {
@@ -15,7 +15,7 @@ export const ProductsList: FC<IProductsListProps> = props => {
         contentContainerStyle={styles.contentContainerWrapper}>
         <View style={styles.contentWrapper}>
           {products.map(product => (
-            <Product {...product} />
+            <Product {...product} key={product.id} />
           ))}
         </View>
       </ScrollView>

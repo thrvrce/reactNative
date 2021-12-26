@@ -3,24 +3,18 @@ import {Text, StyleSheet} from 'react-native';
 import {textStyles} from '../../reusabeStyles/textStyles';
 
 interface IPricesProps {
-  sourcePrice: number;
-  priceDiffPercents: number;
-  priceDiff: number;
+  price: number;
+  compareAtPrice: number;
 }
 
 export const Prices: FC<IPricesProps> = props => {
-  const {sourcePrice, priceDiffPercents, priceDiff} = props;
-  const currentPrice = Math.round(
-    (sourcePrice * (100 + priceDiffPercents)) / 100 + priceDiff,
-  );
-  const currentPriceText = `$${currentPrice}`;
-  const sourcePriceText =
-    sourcePrice !== currentPrice ? ` $${sourcePrice}` : '';
-  const priceDiffPercentsText = priceDiffPercents
-    ? priceDiffPercents < 0
-      ? ` ${-1 * priceDiffPercents}% Off`
-      : ` ${priceDiffPercents}% Up`
-    : '';
+  const {price, compareAtPrice} = props;
+  const currentPriceText = `$${price}`;
+  const sourcePriceText = price !== compareAtPrice ? ` $${compareAtPrice}` : '';
+  const priceDifferencePercents =
+    100 - Math.round((compareAtPrice / price) * 100);
+  const priceDiffPercentsText =
+    priceDifferencePercents < 0 ? ` ${-1 * priceDifferencePercents}% Off` : '';
 
   return (
     <Text>

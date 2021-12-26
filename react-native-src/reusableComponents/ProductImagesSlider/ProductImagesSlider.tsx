@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
-import {View, StyleSheet, Image, ImageProps} from 'react-native';
+import {View, StyleSheet, Image} from 'react-native';
 import SliderArrowLeft from '../../../icons/SliderArrowLeft.svg';
 import SliderArrowRight from '../../../icons/SliderArrowRight.svg';
 
 interface IProductImagesSliderProps {
-  imgSrc: ImageProps;
+  imgSrc: string;
 }
 export const ProductImagesSlider: FC<IProductImagesSliderProps> = props => {
   const {imgSrc} = props;
@@ -12,7 +12,10 @@ export const ProductImagesSlider: FC<IProductImagesSliderProps> = props => {
     <View>
       <View style={styles.sliderWrapper}>
         <SliderArrowLeft />
-        <Image style={styles.image} source={imgSrc} />
+        <Image
+          style={styles.image}
+          source={{uri: `${imgSrc}/${styles.image.width}`}}
+        />
         <SliderArrowRight />
       </View>
       <View style={styles.sliderDotWrapper}>

@@ -1,13 +1,5 @@
 import React, {FC} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Button,
-  Alert,
-  ScrollView,
-  ImageProps,
-} from 'react-native';
+import {View, StyleSheet, Text, Button, Alert, ScrollView} from 'react-native';
 import {TopBar} from '../../reusableComponents/TopBar/TopBar';
 import {Prices} from '../../reusableComponents/Prices/Prices';
 import {ProductImagesSlider} from '../../reusableComponents/ProductImagesSlider/ProductImagesSlider';
@@ -15,24 +7,22 @@ import {textStyles} from '../../reusabeStyles/textStyles';
 import LeftArrow from '../../../icons/LeftArrow.svg';
 import HeartIcon from '../../../icons/HeartIcon.svg';
 import BucketIcon from '../../../icons/BucketIcon.svg';
-import ImgSrcMock from '../../../Img/XiaomiDescription.png';
+
+export interface IProductOptions {
+  colors: {name: string; presentation: string}[];
+}
 
 interface IProductDetailsProps {
-  imgSrc: ImageProps;
+  imgSrc: string;
   name: string;
-  sourcePrice: number;
-  priceDiffPercents: number;
-  priceDiff: number;
+  price: number;
+  compareAtPrice: number;
+  description: string;
+  options: IProductOptions;
 }
 
 export const ProductDetails: FC<IProductDetailsProps> = props => {
-  const {
-    // imgSrc ,
-    name,
-    sourcePrice,
-    priceDiffPercents,
-    priceDiff,
-  } = props;
+  const {imgSrc, name, price, compareAtPrice, description, options} = props;
   return (
     <>
       <TopBar
@@ -40,32 +30,33 @@ export const ProductDetails: FC<IProductDetailsProps> = props => {
         rightBlock={[<HeartIcon style={{marginRight: 25}} />, <BucketIcon />]}
       />
       <ScrollView contentInsetAdjustmentBehavior="automatic">
-        <ProductImagesSlider imgSrc={ImgSrcMock} />
+        <ProductImagesSlider imgSrc={imgSrc} />
         <View style={styles.pricesBlock}>
           <Text style={textStyles.commonText}>{name}</Text>
-          <Prices
-            sourcePrice={sourcePrice}
-            priceDiffPercents={priceDiffPercents}
-            priceDiff={priceDiff}
-          />
+          <Prices price={price} compareAtPrice={compareAtPrice} />
         </View>
-        <View style={styles.selectColorBlock}>
-          <Text style={[textStyles.commonText, styles.selectColorBlockTitle]}>
-            Select color
-          </Text>
-          <View style={styles.colorSelector}>
-            <Text style={[textStyles.commonText, styles.colorText]}>Blue</Text>
+        {options.colors.length ? (
+          <View style={styles.selectColorBlock}>
+            <Text style={[textStyles.commonText, styles.selectColorBlockTitle]}>
+              Select color
+            </Text>
+            <View style={styles.colorSelectorsWrapper}>
+              {options.colors.map(({name}) => (
+                <View style={styles.colorSelector} key={name}>
+                  <Text style={[textStyles.commonText, styles.colorText]}>
+                    {name}
+                  </Text>
+                </View>
+              ))}
+            </View>
           </View>
-        </View>
+        ) : null}
         <View style={styles.descriptionBlock}>
           <Text style={[textStyles.commonText, styles.descriptionBlockTitle]}>
             Description
           </Text>
           <Text style={[textStyles.commonText, styles.descriptionBlockText]}>
-            The phone features a 6.088 inch HD+ (1560 x 720 pixel) resolution,
-            283ppi Super AMOLED display, a glass and plastic body, with Corning
-            Gorilla Glass 5 protection on its front as well as its back. It is
-            powered by a Qualcomm Snapdragon 665 SoC
+            {description}
           </Text>
         </View>
       </ScrollView>
@@ -93,7 +84,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#8F8F8F',
   },
   selectColorBlock: {
-    height: 90,
     paddingTop: 5,
     paddingBottom: 25,
     justifyContent: 'space-evenly',
@@ -107,10 +97,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#4A4A4A',
   },
+  colorSelectorsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
   colorSelector: {
     backgroundColor: '#F7F7F7',
-    width: 50,
-    height: 30,
+    paddingTop: 5,
+    paddingRight: 10,
+    paddingBottom: 5,
+    paddingLeft: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
