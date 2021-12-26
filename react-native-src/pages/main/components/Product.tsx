@@ -1,6 +1,7 @@
-import React, {FC} from 'react';
-import {Text, View, Image, StyleSheet} from 'react-native';
+import React, {FC, useContext} from 'react';
+import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
 import {Prices} from '../../../reusableComponents/Prices/Prices';
+import {AppContext} from '../../../Context/AppContext';
 
 export interface IProduct {
   id: string;
@@ -15,19 +16,21 @@ interface IProductProps extends IProduct {}
 
 export const Product: FC<IProductProps> = props => {
   const {imgSrc, name, price, compareAtPrice, id} = props;
+  const {setSelectedProductToDisplay} = useContext(AppContext);
 
   return (
-    <View style={styles.productWrapper}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: `${imgSrc}/${styles.image.width}/?random=${id}`,
-        }}
-      />
-
-      <Text style={styles.commonText}>{name}</Text>
-      <Prices price={price} compareAtPrice={compareAtPrice} />
-    </View>
+    <Pressable onPress={() => setSelectedProductToDisplay(id)}>
+      <View style={styles.productWrapper}>
+        <Image
+          style={styles.image}
+          source={{
+            uri: `${imgSrc}/${styles.image.width}/?random=${id}`,
+          }}
+        />
+        <Text style={styles.commonText}>{name}</Text>
+        <Prices price={price} compareAtPrice={compareAtPrice} />
+      </View>
+    </Pressable>
   );
 };
 

@@ -1,13 +1,21 @@
-import React, {FC} from 'react';
-import {View, StyleSheet, Text, Button, Alert, ScrollView} from 'react-native';
+import React, {FC, useContext} from 'react';
+import {
+  View,
+  StyleSheet,
+  Text,
+  Button,
+  Alert,
+  ScrollView,
+  RefreshControl,
+} from 'react-native';
 import {TopBar} from '../../reusableComponents/TopBar/TopBar';
 import {Prices} from '../../reusableComponents/Prices/Prices';
 import {ProductImagesSlider} from '../../reusableComponents/ProductImagesSlider/ProductImagesSlider';
+import {BackButton} from '../../reusableComponents/BackButton/BackButton';
 import {textStyles} from '../../reusabeStyles/textStyles';
-import LeftArrow from '../../../icons/LeftArrow.svg';
+import {AppContext} from '../../Context/AppContext';
 import HeartIcon from '../../../icons/HeartIcon.svg';
 import BucketIcon from '../../../icons/BucketIcon.svg';
-
 export interface IProductOptions {
   colors: {name: string; presentation: string}[];
 }
@@ -23,13 +31,24 @@ interface IProductDetailsProps {
 
 export const ProductDetails: FC<IProductDetailsProps> = props => {
   const {imgSrc, name, price, compareAtPrice, description, options} = props;
+  const {isLoading, getProducts} = useContext(AppContext);
+
   return (
     <>
       <TopBar
-        leftBlock={<LeftArrow />}
-        rightBlock={[<HeartIcon style={{marginRight: 25}} />, <BucketIcon />]}
+        leftBlock={<BackButton />}
+        rightBlock={
+          <>
+            <HeartIcon style={{marginRight: 25}} />
+            <BucketIcon />
+          </>
+        }
       />
-      <ScrollView contentInsetAdjustmentBehavior="automatic">
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={getProducts} />
+        }>
         <ProductImagesSlider imgSrc={imgSrc} />
         <View style={styles.pricesBlock}>
           <Text style={textStyles.commonText}>{name}</Text>

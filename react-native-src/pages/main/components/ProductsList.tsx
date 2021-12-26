@@ -1,18 +1,28 @@
-import React, {FC} from 'react';
-import {View, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import React, {FC, useContext} from 'react';
+import {
+  View,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
 import {Product, IProduct} from './Product';
-
+import {AppContext} from '../../../Context/AppContext';
 interface IProductsListProps {
   products: IProduct[];
 }
 
 export const ProductsList: FC<IProductsListProps> = props => {
   const {products} = props;
+  const {isLoading, getProducts} = useContext(AppContext);
   return (
     <SafeAreaView>
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={styles.contentContainerWrapper}>
+        contentContainerStyle={styles.contentContainerWrapper}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={getProducts} />
+        }>
         <View style={styles.contentWrapper}>
           {products.map(product => (
             <Product {...product} key={product.id} />

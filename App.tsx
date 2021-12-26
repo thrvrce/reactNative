@@ -1,6 +1,5 @@
-import React, {useState, useEffect, createContext, useMemo} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
-
 import {MainScreen} from './react-native-src/pages/Main/Main';
 import {
   ProductDetails,
@@ -8,19 +7,15 @@ import {
 } from './react-native-src/pages/ProductDetails/ProductDetails';
 import {IProduct} from './react-native-src/pages/Main/components/Product';
 import {Text} from 'react-native-svg';
-
-interface IAppContext {
-  getProducts: () => void;
-}
-
-const AppContext = createContext<IAppContext>({
-  getProducts: () => {},
-});
+import {AppContext} from './react-native-src/Context/AppContext';
 
 const App = () => {
   const [isLoading, setLoadingStatus] = useState(true);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [options, setOptions] = useState<IProductOptions>([]);
+  const [selectedProductToDisplay, setSelectedProductToDisplay] = useState<
+    null | string
+  >(null);
 
   const getProducts = async () => {
     try {
@@ -39,6 +34,7 @@ const App = () => {
             description,
             imgSrc: 'https://picsum.photos',
             price: Number(price),
+            // price: Math.round(Number(price) * Math.random()), // uncomment for refresh testing
             compareAtPrice: Number(compare_at_price ?? price),
           };
         },
@@ -73,7 +69,17 @@ const App = () => {
     }
   };
 
-  const appContext = useMemo(() => ({getProducts}), []);
+  const appContext = useMemo(
+    () => ({getProducts, setSelectedProductToDisplay, isLoading}),
+    [isLoading],
+  );
+  const selectedProduct = useMemo(
+    () =>
+      selectedProductToDisplay
+        ? products.find(product => product.id === selectedProductToDisplay)
+        : null,
+    [products, selectedProductToDisplay],
+  );
 
   useEffect(() => {
     getProducts();
@@ -86,8 +92,11 @@ const App = () => {
       ) : (
         <View style={styles.appWrapper}>
           <AppContext.Provider value={appContext}>
-            <MainScreen products={products} />
-            {/* <ProductDetails {...products[0]} options={options} /> */}
+            {selectedProduct ? (
+              <ProductDetails {...selectedProduct} options={options} />
+            ) : (
+              <MainScreen products={products} />
+            )}
           </AppContext.Provider>
         </View>
       )}
