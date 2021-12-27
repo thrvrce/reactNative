@@ -1,4 +1,4 @@
-import React, {FC, useContext} from 'react';
+import React, {FC, useContext, useCallback} from 'react';
 import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
 import {Prices} from '../../../reusableComponents/Prices/Prices';
 import {AppContext} from '../../../Context/AppContext';
@@ -17,9 +17,12 @@ interface IProductProps extends IProduct {}
 export const Product: FC<IProductProps> = props => {
   const {imgSrc, name, price, compareAtPrice, id} = props;
   const {setSelectedProductToDisplay} = useContext(AppContext);
+  const onPress = useCallback(() => {
+    setSelectedProductToDisplay(id);
+  }, [setSelectedProductToDisplay, id]);
 
   return (
-    <Pressable onPress={() => setSelectedProductToDisplay(id)}>
+    <Pressable onPress={onPress}>
       <View style={styles.productWrapper}>
         <Image
           style={styles.image}

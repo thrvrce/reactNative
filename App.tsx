@@ -1,18 +1,17 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet, Text} from 'react-native';
 import {MainScreen} from './react-native-src/pages/Main/Main';
 import {
   ProductDetails,
   IProductOptions,
 } from './react-native-src/pages/ProductDetails/ProductDetails';
 import {IProduct} from './react-native-src/pages/Main/components/Product';
-import {Text} from 'react-native-svg';
 import {AppContext} from './react-native-src/Context/AppContext';
 
 const App = () => {
-  const [isLoading, setLoadingStatus] = useState(true);
+  const [isProductsDataLoading, setProductsDataLoadingStatus] = useState(true);
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [options, setOptions] = useState<IProductOptions>([]);
+  const [options, setOptions] = useState<IProductOptions>({colors: []});
   const [selectedProductToDisplay, setSelectedProductToDisplay] = useState<
     null | string
   >(null);
@@ -65,14 +64,22 @@ const App = () => {
         console.error(JSON.stringify(err.message));
       }
     } finally {
-      setLoadingStatus(false);
+      setProductsDataLoadingStatus(false);
     }
   };
 
   const appContext = useMemo(
-    () => ({getProducts, setSelectedProductToDisplay, isLoading}),
-    [isLoading],
+    () => ({
+      loadProductsData: () => {
+        setProductsDataLoadingStatus(true);
+        getProducts();
+      },
+      setSelectedProductToDisplay,
+      isProductsDataLoading,
+    }),
+    [isProductsDataLoading],
   );
+
   const selectedProduct = useMemo(
     () =>
       selectedProductToDisplay
@@ -83,23 +90,19 @@ const App = () => {
 
   useEffect(() => {
     getProducts();
-  }, [isLoading]);
+  }, []);
 
   return (
     <SafeAreaView>
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <View style={styles.appWrapper}>
-          <AppContext.Provider value={appContext}>
-            {selectedProduct ? (
-              <ProductDetails {...selectedProduct} options={options} />
-            ) : (
-              <MainScreen products={products} />
-            )}
-          </AppContext.Provider>
-        </View>
-      )}
+      <View style={styles.appWrapper}>
+        <AppContext.Provider value={appContext}>
+          {selectedProduct ? (
+            <ProductDetails {...selectedProduct} options={options} />
+          ) : (
+            <MainScreen products={products} />
+          )}
+        </AppContext.Provider>
+      </View>
     </SafeAreaView>
   );
 };

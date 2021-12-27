@@ -1,13 +1,13 @@
 import {createContext} from 'react';
 
 interface IAppContext {
-  getProducts: () => void;
+  loadProductsData: () => void;
   setSelectedProductToDisplay: (id: string | null) => void;
-  isLoading: boolean;
+  isProductsDataLoading: boolean;
 }
 
 export const AppContext = createContext<IAppContext>({
-  getProducts: () => {},
+  loadProductsData: () => {},
   setSelectedProductToDisplay: () => {},
-  isLoading: true,
+  isProductsDataLoading: true,
 });

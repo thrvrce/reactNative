@@ -1,11 +1,5 @@
 import React, {FC, useContext} from 'react';
-import {
-  View,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  RefreshControl,
-} from 'react-native';
+import {SafeAreaView, StyleSheet, RefreshControl, FlatList} from 'react-native';
 import {Product, IProduct} from './Product';
 import {AppContext} from '../../../Context/AppContext';
 interface IProductsListProps {
@@ -14,32 +8,30 @@ interface IProductsListProps {
 
 export const ProductsList: FC<IProductsListProps> = props => {
   const {products} = props;
-  const {isLoading, getProducts} = useContext(AppContext);
+  const {isProductsDataLoading, loadProductsData} = useContext(AppContext);
+  const renderItem = ({item: product}: {item: IProduct}) => (
+    <Product {...product} />
+  );
+
   return (
     <SafeAreaView>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
+      <FlatList
         contentContainerStyle={styles.contentContainerWrapper}
+        data={products}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        numColumns={2}
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={getProducts} />
-        }>
-        <View style={styles.contentWrapper}>
-          {products.map(product => (
-            <Product {...product} key={product.id} />
-          ))}
-        </View>
-      </ScrollView>
+          <RefreshControl
+            refreshing={isProductsDataLoading}
+            onRefresh={loadProductsData}
+          />
+        }
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   contentContainerWrapper: {alignItems: 'center', backgroundColor: '#FFF'},
-  contentWrapper: {
-    padding: 10,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    backgroundColor: '#FFF',
-    width: 376,
-  },
 });

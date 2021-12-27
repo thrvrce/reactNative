@@ -31,7 +31,7 @@ interface IProductDetailsProps {
 
 export const ProductDetails: FC<IProductDetailsProps> = props => {
   const {imgSrc, name, price, compareAtPrice, description, options} = props;
-  const {isLoading, getProducts} = useContext(AppContext);
+  const {isProductsDataLoading, loadProductsData} = useContext(AppContext);
 
   return (
     <>
@@ -47,7 +47,10 @@ export const ProductDetails: FC<IProductDetailsProps> = props => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={getProducts} />
+          <RefreshControl
+            refreshing={isProductsDataLoading}
+            onRefresh={loadProductsData}
+          />
         }>
         <ProductImagesSlider imgSrc={imgSrc} />
         <View style={styles.pricesBlock}>
