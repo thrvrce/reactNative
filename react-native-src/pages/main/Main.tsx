@@ -1,17 +1,14 @@
-import React, {FC} from 'react';
+import React, {FC, useContext} from 'react';
 import {TopBar} from '../../reusableComponents/TopBar/TopBar';
 import {SearchBar} from '../../reusableComponents/SearchBar/SearchBar';
 import {ProductsList} from './components/ProductsList';
 import BurgerMenuIcon from '../../../icons/BurgerMenuIcon.svg';
 import BucketIcon from '../../../icons/BucketIcon.svg';
-import {IProduct} from './react-native-src/pages/Main/components/Product';
+import {AppContext} from '../../Context/AppContext';
 
-interface IMainScreen {
-  products: IProduct[];
-}
+export const MainScreen: FC = () => {
+  const {products} = useContext(AppContext);
 
-export const MainScreen: FC<IMainScreen> = props => {
-  const {products} = props;
   return (
     <>
       <TopBar

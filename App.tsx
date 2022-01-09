@@ -1,20 +1,24 @@
 import React, {useState, useEffect, useMemo} from 'react';
-import {View, SafeAreaView, StyleSheet, Text} from 'react-native';
+import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {MainScreen} from './react-native-src/pages/Main/Main';
+import {ProductDetails} from './react-native-src/pages/ProductDetails/ProductDetails';
 import {
-  ProductDetails,
+  AppContext,
+  IProduct,
   IProductOptions,
-} from './react-native-src/pages/ProductDetails/ProductDetails';
-import {IProduct} from './react-native-src/pages/Main/components/Product';
-import {AppContext} from './react-native-src/Context/AppContext';
+} from './react-native-src/Context/AppContext';
+import {RootStackParamList} from './react-native-src/navigation/@types/rootStack';
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
   const [isProductsDataLoading, setProductsDataLoadingStatus] = useState(true);
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [options, setOptions] = useState<IProductOptions>({colors: []});
-  const [selectedProductToDisplay, setSelectedProductToDisplay] = useState<
-    null | string
-  >(null);
+  const [productOptions, setProductOptions] = useState<IProductOptions>({
+    colors: [],
+  });
 
   const getProducts = async () => {
     try {
@@ -51,7 +55,7 @@ const App = () => {
           }),
         );
       setProducts(productsData);
-      setOptions(optionsData);
+      setProductOptions(optionsData);
     } catch (err) {
       const isError = (err: any): err is Error => {
         if (err.message) {
@@ -70,22 +74,15 @@ const App = () => {
 
   const appContext = useMemo(
     () => ({
+      products,
+      productOptions,
       loadProductsData: () => {
         setProductsDataLoadingStatus(true);
         getProducts();
       },
-      setSelectedProductToDisplay,
       isProductsDataLoading,
     }),
-    [isProductsDataLoading],
-  );
-
-  const selectedProduct = useMemo(
-    () =>
-      selectedProductToDisplay
-        ? products.find(product => product.id === selectedProductToDisplay)
-        : null,
-    [products, selectedProductToDisplay],
+    [isProductsDataLoading, products, productOptions],
   );
 
   useEffect(() => {
@@ -96,11 +93,20 @@ const App = () => {
     <SafeAreaView>
       <View style={styles.appWrapper}>
         <AppContext.Provider value={appContext}>
-          {selectedProduct ? (
-            <ProductDetails {...selectedProduct} options={options} />
-          ) : (
-            <MainScreen products={products} />
-          )}
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="MainScreen">
+              <Stack.Screen
+                name="MainScreen"
+                component={MainScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen
+                name="ProductDetails"
+                component={ProductDetails}
+                options={{headerShown: false}}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
         </AppContext.Provider>
       </View>
     </SafeAreaView>
@@ -108,6 +114,7 @@ const App = () => {
 };
 
 export default App;
+
 const styles = StyleSheet.create({
   appWrapper: {backgroundColor: '#FFF', height: '100%'},
 });

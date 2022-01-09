@@ -1,25 +1,22 @@
-import React, {FC, useContext, useCallback} from 'react';
+import React, {FC, useCallback} from 'react';
 import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Prices} from '../../../reusableComponents/Prices/Prices';
-import {AppContext} from '../../../Context/AppContext';
+import {IProduct} from '../../../Context/AppContext';
+import {RootStackParamList} from '../../../navigation/@types/rootStack';
 
-export interface IProduct {
-  id: string;
-  name: string;
-  description: string;
-  imgSrc: string;
-  price: number;
-  compareAtPrice: number;
-}
+type ProductDetailsRouteProps = NativeStackScreenProps<
+  RootStackParamList,
+  'ProductDetails'
+>;
 
-interface IProductProps extends IProduct {}
-
-export const Product: FC<IProductProps> = props => {
+export const Product: FC<IProduct> = props => {
   const {imgSrc, name, price, compareAtPrice, id} = props;
-  const {setSelectedProductToDisplay} = useContext(AppContext);
+  const navigation = useNavigation<ProductDetailsRouteProps['navigation']>();
   const onPress = useCallback(() => {
-    setSelectedProductToDisplay(id);
-  }, [setSelectedProductToDisplay, id]);
+    navigation.navigate('ProductDetails', {productId: id});
+  }, [id, navigation]);
 
   return (
     <Pressable onPress={onPress}>

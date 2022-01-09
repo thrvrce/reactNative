@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Text, StyleSheet} from 'react-native';
-import {textStyles} from '../../reusabeStyles/textStyles';
+import {textStyles} from '../../reusableStyles/textStyles';
 
 interface IPricesProps {
   price: number;

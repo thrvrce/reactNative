@@ -1,7 +1,7 @@
 import React, {FC, useContext} from 'react';
 import {SafeAreaView, StyleSheet, RefreshControl, FlatList} from 'react-native';
-import {Product, IProduct} from './Product';
-import {AppContext} from '../../../Context/AppContext';
+import {Product} from './Product';
+import {AppContext, IProduct} from '../../../Context/AppContext';
 interface IProductsListProps {
   products: IProduct[];
 }
