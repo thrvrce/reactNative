@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-
 import {
   AppContext,
   IProduct,
   IProductOptions,
+  ICartItem,
 } from './react-native-src/Context/AppContext';
 import {AppDrawerNavigation} from './react-native-src/navigation/AppDrawerNavigation';
 
@@ -15,7 +15,8 @@ const App = () => {
   const [productOptions, setProductOptions] = useState<IProductOptions>({
     colors: [],
   });
-
+  const [cart, changeCart] = useState<ICartItem[]>([]);
+  const [userLogged, changeUserLogged] = useState(false);
   const getProducts = async () => {
     try {
       const rawResponse = await fetch(
@@ -77,8 +78,20 @@ const App = () => {
         getProducts();
       },
       isProductsDataLoading,
+      cart,
+      changeCart,
+      userLogged,
+      changeUserLogged,
     }),
-    [isProductsDataLoading, products, productOptions],
+    [
+      isProductsDataLoading,
+      products,
+      productOptions,
+      cart,
+      changeCart,
+      userLogged,
+      changeUserLogged,
+    ],
   );
 
   useEffect(() => {
