@@ -4,7 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Prices} from '../../../reusableComponents/Prices/Prices';
 import {IProduct} from '../../../Context/AppContext';
-import {RootStackParamList} from '../../../navigation/@types/rootStack';
+import {RootStackParamList} from '../../../navigation/MainStackNavigation';
 
 type ProductDetailsRouteProps = NativeStackScreenProps<
   RootStackParamList,

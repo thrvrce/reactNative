@@ -17,7 +17,7 @@ import {textStyles} from '../../reusableStyles/textStyles';
 import {AppContext} from '../../Context/AppContext';
 import HeartIcon from '../../../icons/HeartIcon.svg';
 import BucketIcon from '../../../icons/BucketIcon.svg';
-import {RootStackParamList} from '../../navigation/@types/rootStack';
+import {RootStackParamList} from '../../navigation/MainStackNavigation';
 import {useGetProductById} from '../../hooks/useGetProductById';
 
 type ProductDetailsRouteProps = NativeStackScreenProps<

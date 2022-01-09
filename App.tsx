@@ -1,17 +1,13 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {MainScreen} from './react-native-src/pages/Main/Main';
-import {ProductDetails} from './react-native-src/pages/ProductDetails/ProductDetails';
+
 import {
   AppContext,
   IProduct,
   IProductOptions,
 } from './react-native-src/Context/AppContext';
-import {RootStackParamList} from './react-native-src/navigation/@types/rootStack';
-
-const Stack = createNativeStackNavigator<RootStackParamList>();
+import {AppDrawerNavigation} from './react-native-src/navigation/AppDrawerNavigation';
 
 const App = () => {
   const [isProductsDataLoading, setProductsDataLoadingStatus] = useState(true);
@@ -94,18 +90,7 @@ const App = () => {
       <View style={styles.appWrapper}>
         <AppContext.Provider value={appContext}>
           <NavigationContainer>
-            <Stack.Navigator initialRouteName="MainScreen">
-              <Stack.Screen
-                name="MainScreen"
-                component={MainScreen}
-                options={{headerShown: false}}
-              />
-              <Stack.Screen
-                name="ProductDetails"
-                component={ProductDetails}
-                options={{headerShown: false}}
-              />
-            </Stack.Navigator>
+            <AppDrawerNavigation />
           </NavigationContainer>
         </AppContext.Provider>
       </View>
