@@ -1,5 +1,5 @@
 import {useContext, useCallback} from 'react';
-import {AppContext} from '../Context/AppContext';
+import {AppContext} from '../AppContext/AppContext';
 
 export function useAddToCartHandler<
   TNavigation extends {navigate: (path: string) => void},

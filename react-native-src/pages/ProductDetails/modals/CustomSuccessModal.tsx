@@ -21,7 +21,7 @@ export const CustomSuccessModal: FC<ICustomSuccessModal> = props => {
           <Button
             title="OK"
             color="#008ACE"
-            onPress={() => props.navigation.navigate('ProductDetailsView')}
+            onPress={() => props.navigation.navigate('ProductDetails')}
           />
         </View>
       }

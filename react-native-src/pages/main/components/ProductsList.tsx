@@ -1,8 +1,8 @@
 import React, {FC, useContext} from 'react';
 import {SafeAreaView, StyleSheet, RefreshControl, FlatList} from 'react-native';
 import {Product} from './Product';
-import {AppContext, IProduct} from '../../../Context/AppContext';
-import {useInitialLoadProducts} from '../../../hooks/useInitialLoadProducts';
+import {AppContext, IProduct} from '../../../AppContext/AppContext';
+import {useInitialLoadProducts} from '../../../reusableHooks/useInitialLoadProducts';
 
 export const ProductsList: FC = () => {
   const {products, isProductsDataLoading, loadProductsData} =

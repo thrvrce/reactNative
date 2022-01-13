@@ -1,5 +1,5 @@
 export type TProductDetailsStack = {
-  ProductDetailsView: undefined;
+  ProductDetails: undefined;
   ErrorModal: undefined;
   SuccessModal: undefined;
   WarningModal: undefined;

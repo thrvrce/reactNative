@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {AppContext} from './react-native-src/Context/AppContext';
-import {useGetAppContext} from './react-native-src/Context/useGetAppContext';
+import {AppContext} from './react-native-src/AppContext/AppContext';
+import {useGetAppContext} from './react-native-src/AppContext/useGetAppContext';
 import {AppDrawerNavigation} from './react-native-src/navigation/AppDrawerNavigation';
 
 const App: FC = () => {

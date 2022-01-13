@@ -3,19 +3,19 @@ import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Prices} from '../../../reusableComponents/Prices/Prices';
-import {IProduct} from '../../../Context/AppContext';
+import {IProduct} from '../../../AppContext/AppContext';
 import {RootStackParamList} from '../../../navigation/MainStackNavigation';
 
 type ProductDetailsRouteProps = NativeStackScreenProps<
   RootStackParamList,
-  'ProductDetails'
+  'ProductDetailsNavigationStack'
 >;
 
 export const Product: FC<IProduct> = props => {
   const {imgSrc, name, price, compareAtPrice, id} = props;
   const navigation = useNavigation<ProductDetailsRouteProps['navigation']>();
   const onPress = useCallback(() => {
-    navigation.navigate('ProductDetails', {productId: id});
+    navigation.navigate('ProductDetailsNavigationStack', {productId: id});
   }, [id, navigation]);
 
   return (

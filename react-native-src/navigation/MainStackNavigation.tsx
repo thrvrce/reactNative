@@ -1,12 +1,12 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {MainScreen} from '../pages/Main/Main';
-import {ProductDetails} from '../pages/ProductDetails/ProductDetails';
+import {ProductDetailsNavigationStack} from '../pages/ProductDetails/ProductDetailsNavigationStack';
 import {MainScreenNavigationHeader} from '../pages/Main/components/MainScreenNavigationHeader';
 
 export type RootStackParamList = {
   MainScreen: undefined;
-  ProductDetails: {productId: string};
+  ProductDetailsNavigationStack: {productId: string};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -21,8 +21,8 @@ export const MainStackNavigation = () => (
       }}
     />
     <Stack.Screen
-      name="ProductDetails"
-      component={ProductDetails}
+      name="ProductDetailsNavigationStack"
+      component={ProductDetailsNavigationStack}
       options={{headerShown: false}}
     />
   </Stack.Navigator>

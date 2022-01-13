@@ -1,5 +1,5 @@
 import {useContext, useEffect} from 'react';
-import {AppContext} from '../Context/AppContext';
+import {AppContext} from '../AppContext/AppContext';
 
 export const useInitialLoadProducts = () => {
   const {products, loadProductsData} = useContext(AppContext);
