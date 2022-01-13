@@ -21,7 +21,7 @@ export const CustomErrorModal: FC<ICustomErrorModal> = props => {
           <Button
             title="OK"
             color="#008ACE"
-            onPress={() => props.navigation.navigate('ProductDetailsView')}
+            onPress={() => props.navigation.goBack()}
           />
         </View>
       }
