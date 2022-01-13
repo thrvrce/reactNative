@@ -16,6 +16,7 @@ import {useGetProductById} from '../../hooks/useGetProductById';
 import {ProductDetailsContext} from './ProductDetailsContext';
 import {TProductDetailsStack} from './TProductDetailsStack';
 import {useAddToCartHandler} from '../../hooks/useAddToCartHandler';
+import {useInitialLoadProducts} from '../../hooks/useInitialLoadProducts';
 
 type ProductDetailsRouteProps = NativeStackScreenProps<
   TProductDetailsStack,
@@ -45,6 +46,8 @@ export const ProductDetailsView: FC<ProductDetailsRouteProps> = props => {
     selectedColor,
     productId,
   );
+
+  useInitialLoadProducts();
 
   return (
     <>

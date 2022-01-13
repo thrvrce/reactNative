@@ -2,16 +2,15 @@ import React, {FC, useContext} from 'react';
 import {SafeAreaView, StyleSheet, RefreshControl, FlatList} from 'react-native';
 import {Product} from './Product';
 import {AppContext, IProduct} from '../../../Context/AppContext';
-interface IProductsListProps {
-  products: IProduct[];
-}
+import {useInitialLoadProducts} from '../../../hooks/useInitialLoadProducts';
 
-export const ProductsList: FC<IProductsListProps> = props => {
-  const {products} = props;
-  const {isProductsDataLoading, loadProductsData} = useContext(AppContext);
+export const ProductsList: FC = () => {
+  const {products, isProductsDataLoading, loadProductsData} =
+    useContext(AppContext);
   const renderItem = ({item: product}: {item: IProduct}) => (
     <Product {...product} />
   );
+  useInitialLoadProducts();
 
   return (
     <SafeAreaView>
