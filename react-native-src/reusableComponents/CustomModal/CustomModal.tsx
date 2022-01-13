@@ -32,7 +32,7 @@ const modal = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: '#E5E5E5',
+    backgroundColor: 'background-color:rgba(229,229,229,0.8);',
   },
   wrapper: {
     backgroundColor: '#FFFFFF',

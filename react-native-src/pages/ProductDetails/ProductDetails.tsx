@@ -33,7 +33,10 @@ export const ProductDetails: FC<ProductDetailsRouteProps> = props => {
           }}
         />
         <RootStack.Group
-          screenOptions={{presentation: 'modal', headerShown: false}}>
+          screenOptions={{
+            presentation: 'transparentModal',
+            headerShown: false,
+          }}>
           <RootStack.Screen name="ErrorModal" component={CustomErrorModal} />
           <RootStack.Screen
             name="SuccessModal"
