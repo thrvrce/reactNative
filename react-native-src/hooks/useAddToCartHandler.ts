@@ -10,6 +10,7 @@ export function useAddToCartHandler<
     if (userLogged) {
       navigation.navigate('WarningModal');
     } else if (!selectedColor) {
+      // on design mockup, if product color was not specified, should redirect to error modal
       navigation.navigate('ErrorModal');
     } else {
       changeCart(prevCartState => [
