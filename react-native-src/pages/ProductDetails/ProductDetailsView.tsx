@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useContext, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,51 +7,59 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import {TopBar} from '../../reusableComponents/TopBar/TopBar';
+import {AppContext} from '../../Context/AppContext';
 import {Prices} from '../../reusableComponents/Prices/Prices';
 import {ProductImagesSlider} from '../../reusableComponents/ProductImagesSlider/ProductImagesSlider';
-import {BackButton} from '../../reusableComponents/BackButton/BackButton';
 import {textStyles} from '../../reusableStyles/textStyles';
-import HeartIcon from '../../../icons/HeartIcon.svg';
-import BucketIcon from '../../../icons/BucketIcon.svg';
-import {IProduct, IProductOptions} from '../../Context/AppContext';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useGetProductById} from '../../hooks/useGetProductById';
+import {ProductDetailsContext} from './ProductDetailsContext';
+import {TProductDetailsStack} from './TProductDetailsStack';
 
-interface IProductDetailsViewProps {
-  goBackFn: () => void;
-  isProductsDataLoading: boolean;
-  loadProductsData: () => void;
-  product: IProduct | undefined;
-  productOptions: IProductOptions;
-  selectColor: (color: string) => void;
-  selectedColor: string;
-  addToCartHandler: () => void;
-  isProductInCart: boolean;
-}
+type ProductDetailsRouteProps = NativeStackScreenProps<
+  TProductDetailsStack,
+  'ProductDetailsView'
+>;
 
-export const ProductDetailsView: FC<IProductDetailsViewProps> = props => {
+export const ProductDetailsView: FC<ProductDetailsRouteProps> = props => {
+  const {navigation} = props;
   const {
-    goBackFn,
     isProductsDataLoading,
     loadProductsData,
-    product,
+    products,
     productOptions,
-    selectColor,
-    selectedColor,
-    addToCartHandler,
-    isProductInCart,
-  } = props;
+    cart,
+    changeCart,
+    userLogged,
+  } = useContext(AppContext);
+  const productId = useContext(ProductDetailsContext);
+  const [selectedColor, setSelectedColor] = useState<string>('');
+  const product = useGetProductById(products, productId);
+  const isProductInCart = cart.find(
+    cartItem =>
+      cartItem.productId === productId &&
+      cartItem.productOptions.color === selectedColor,
+  );
+
+  const addToCartHandler = () => {
+    if (userLogged) {
+      navigation.navigate('WarningModal');
+    } else if (!selectedColor) {
+      navigation.navigate('ErrorModal');
+    } else {
+      changeCart(prevCartState => [
+        ...prevCartState,
+        {
+          productId: product?.id ?? '',
+          productOptions: {color: selectedColor},
+        },
+      ]);
+      navigation.navigate('SuccessModal');
+    }
+  };
 
   return (
     <>
-      <TopBar
-        leftBlock={<BackButton goBackFn={goBackFn} />}
-        rightBlock={
-          <>
-            <HeartIcon style={styles.heartIcon} />
-            <BucketIcon />
-          </>
-        }
-      />
       {product && (
         <>
           <ScrollView
@@ -93,7 +101,7 @@ export const ProductDetailsView: FC<IProductDetailsViewProps> = props => {
                           key={color.name}>
                           <Text
                             style={[textStyles.commonText, styles.colorText]}
-                            onPress={() => selectColor(color.name)}>
+                            onPress={() => setSelectedColor(color.name)}>
                             {color.name}
                           </Text>
                         </View>
