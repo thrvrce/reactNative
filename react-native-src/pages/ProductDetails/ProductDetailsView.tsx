@@ -15,6 +15,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useGetProductById} from '../../hooks/useGetProductById';
 import {ProductDetailsContext} from './ProductDetailsContext';
 import {TProductDetailsStack} from './TProductDetailsStack';
+import {useAddToCartHandler} from '../../hooks/useAddToCartHandler';
 
 type ProductDetailsRouteProps = NativeStackScreenProps<
   TProductDetailsStack,
@@ -29,8 +30,6 @@ export const ProductDetailsView: FC<ProductDetailsRouteProps> = props => {
     products,
     productOptions,
     cart,
-    changeCart,
-    userLogged,
   } = useContext(AppContext);
   const productId = useContext(ProductDetailsContext);
   const [selectedColor, setSelectedColor] = useState<string>('');
@@ -41,22 +40,11 @@ export const ProductDetailsView: FC<ProductDetailsRouteProps> = props => {
       cartItem.productOptions.color === selectedColor,
   );
 
-  const addToCartHandler = () => {
-    if (userLogged) {
-      navigation.navigate('WarningModal');
-    } else if (!selectedColor) {
-      navigation.navigate('ErrorModal');
-    } else {
-      changeCart(prevCartState => [
-        ...prevCartState,
-        {
-          productId: product?.id ?? '',
-          productOptions: {color: selectedColor},
-        },
-      ]);
-      navigation.navigate('SuccessModal');
-    }
-  };
+  const addToCartHandler = useAddToCartHandler(
+    navigation,
+    selectedColor,
+    productId,
+  );
 
   return (
     <>
