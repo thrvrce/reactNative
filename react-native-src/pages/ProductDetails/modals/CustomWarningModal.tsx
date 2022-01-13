@@ -2,12 +2,13 @@ import React, {FC} from 'react';
 import {Button, View} from 'react-native';
 import {CustomModal} from '../../../reusableComponents/CustomModal/CustomModal';
 import WarningIcon from '../../../reusableComponents/CustomModal/icons/WarningIcon.svg';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {TProductDetailsStack} from '../TProductDetailsStack';
 
-interface ICustomWarningModal {
-  navigation: {
-    navigate: (page: string) => void;
-  };
-}
+type ICustomWarningModal = NativeStackScreenProps<
+  TProductDetailsStack,
+  'WarningModal'
+>;
 
 export const CustomWarningModal: FC<ICustomWarningModal> = props => {
   return (

@@ -2,12 +2,14 @@ import React, {FC} from 'react';
 import {Button, View} from 'react-native';
 import {CustomModal} from '../../../reusableComponents/CustomModal/CustomModal';
 import ErrorIcon from '../../../reusableComponents/CustomModal/icons/ErrorIcon.svg';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {TProductDetailsStack} from '../TProductDetailsStack';
 
-interface ICustomErrorModal {
-  navigation: {
-    navigate: (page: string) => void;
-  };
-}
+type ICustomErrorModal = NativeStackScreenProps<
+  TProductDetailsStack,
+  'ErrorModal'
+>;
+
 export const CustomErrorModal: FC<ICustomErrorModal> = props => {
   return (
     <CustomModal
