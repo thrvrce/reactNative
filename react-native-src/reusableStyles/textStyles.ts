@@ -7,6 +7,6 @@ export const textStyles = StyleSheet.create({
     fontWeight: 'normal',
     fontSize: 15,
     color: '#4A4A4A',
-    marginRight: 10,
+    // marginRight: 10,
   },
 });

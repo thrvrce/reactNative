@@ -1,94 +1,127 @@
-import React, {FC, useContext} from 'react';
+import React, {FC, useContext, useState} from 'react';
 import {
   View,
   StyleSheet,
   Text,
   Button,
-  Alert,
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import {TopBar} from '../../reusableComponents/TopBar/TopBar';
+import {AppContext} from '../../AppContext/AppContext';
 import {Prices} from '../../reusableComponents/Prices/Prices';
 import {ProductImagesSlider} from '../../reusableComponents/ProductImagesSlider/ProductImagesSlider';
-import {BackButton} from '../../reusableComponents/BackButton/BackButton';
-import {textStyles} from '../../reusabeStyles/textStyles';
-import {AppContext} from '../../Context/AppContext';
-import HeartIcon from '../../../icons/HeartIcon.svg';
-import BucketIcon from '../../../icons/BucketIcon.svg';
-export interface IProductOptions {
-  colors: {name: string; presentation: string}[];
-}
+import {textStyles} from '../../reusableStyles/textStyles';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useGetProductById} from '../../reusableHooks/useGetProductById';
+import {ProductDetailsContext} from './ProductDetailsContext';
+import {TProductDetailsStack} from './TProductDetailsStack';
+import {useAddToCartHandler} from '../../reusableHooks/useAddToCartHandler';
+import {useInitialLoadProducts} from '../../reusableHooks/useInitialLoadProducts';
 
-interface IProductDetailsProps {
-  imgSrc: string;
-  name: string;
-  price: number;
-  compareAtPrice: number;
-  description: string;
-  options: IProductOptions;
-}
+type ProductDetailsRouteProps = NativeStackScreenProps<
+  TProductDetailsStack,
+  'ProductDetails'
+>;
 
-export const ProductDetails: FC<IProductDetailsProps> = props => {
-  const {imgSrc, name, price, compareAtPrice, description, options} = props;
-  const {isProductsDataLoading, loadProductsData} = useContext(AppContext);
+export const ProductDetails: FC<ProductDetailsRouteProps> = props => {
+  const {navigation} = props;
+  const {
+    isProductsDataLoading,
+    loadProductsData,
+    products,
+    productOptions,
+    cart,
+  } = useContext(AppContext);
+  const productId = useContext(ProductDetailsContext);
+  const [selectedColor, setSelectedColor] = useState<string>('');
+  const product = useGetProductById(products, productId);
+  const isProductInCart = cart.find(
+    cartItem =>
+      cartItem.productId === productId &&
+      cartItem.productOptions.color === selectedColor,
+  );
+
+  const addToCartHandler = useAddToCartHandler(
+    navigation,
+    selectedColor,
+    productId,
+  );
+
+  useInitialLoadProducts();
 
   return (
     <>
-      <TopBar
-        leftBlock={<BackButton />}
-        rightBlock={
-          <>
-            <HeartIcon style={{marginRight: 25}} />
-            <BucketIcon />
-          </>
-        }
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        refreshControl={
-          <RefreshControl
-            refreshing={isProductsDataLoading}
-            onRefresh={loadProductsData}
-          />
-        }>
-        <ProductImagesSlider imgSrc={imgSrc} />
-        <View style={styles.pricesBlock}>
-          <Text style={textStyles.commonText}>{name}</Text>
-          <Prices price={price} compareAtPrice={compareAtPrice} />
-        </View>
-        {options.colors.length ? (
-          <View style={styles.selectColorBlock}>
-            <Text style={[textStyles.commonText, styles.selectColorBlockTitle]}>
-              Select color
-            </Text>
-            <View style={styles.colorSelectorsWrapper}>
-              {options.colors.map(({name}) => (
-                <View style={styles.colorSelector} key={name}>
-                  <Text style={[textStyles.commonText, styles.colorText]}>
-                    {name}
+      {product && (
+        <>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            refreshControl={
+              <RefreshControl
+                refreshing={isProductsDataLoading}
+                onRefresh={loadProductsData}
+              />
+            }>
+            <>
+              <ProductImagesSlider imgSrc={product.imgSrc} />
+              <View style={styles.pricesBlock}>
+                <Text style={textStyles.commonText}>{product.name}</Text>
+                <Prices
+                  price={product.price}
+                  compareAtPrice={product.compareAtPrice}
+                />
+              </View>
+              {productOptions.colors.length ? (
+                <View style={styles.selectColorBlock}>
+                  <Text
+                    style={[
+                      textStyles.commonText,
+                      styles.selectColorBlockTitle,
+                    ]}>
+                    Select color
                   </Text>
+                  <View style={styles.colorSelectorsWrapper}>
+                    {productOptions.colors.map(color => {
+                      return (
+                        <View
+                          style={[
+                            styles.colorSelector,
+                            color.name === selectedColor
+                              ? styles.selectedColor
+                              : null,
+                          ]}
+                          key={color.name}>
+                          <Text
+                            style={[textStyles.commonText, styles.colorText]}
+                            onPress={() => setSelectedColor(color.name)}>
+                            {color.name}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </View>
                 </View>
-              ))}
-            </View>
+              ) : null}
+              <View style={styles.descriptionBlock}>
+                <Text
+                  style={[textStyles.commonText, styles.descriptionBlockTitle]}>
+                  Description
+                </Text>
+                <Text
+                  style={[textStyles.commonText, styles.descriptionBlockText]}>
+                  {product.description}
+                </Text>
+              </View>
+            </>
+          </ScrollView>
+          <View style={styles.addToCartButton}>
+            <Button
+              title="ADD TO CART"
+              color="#008ACE"
+              onPress={isProductInCart ? undefined : addToCartHandler}
+            />
           </View>
-        ) : null}
-        <View style={styles.descriptionBlock}>
-          <Text style={[textStyles.commonText, styles.descriptionBlockTitle]}>
-            Description
-          </Text>
-          <Text style={[textStyles.commonText, styles.descriptionBlockText]}>
-            {description}
-          </Text>
-        </View>
-      </ScrollView>
-      <View style={styles.addToCartButton}>
-        <Button
-          title="ADD TO CART"
-          color="#008ACE"
-          onPress={() => Alert.alert('Simple Button pressed')}
-        />
-      </View>
+        </>
+      )}
     </>
   );
 };
@@ -133,6 +166,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  selectedColor: {
+    backgroundColor: '#008ACE',
+  },
   colorText: {
     color: '#4A4A4A',
   },
@@ -155,4 +191,5 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     alignSelf: 'center',
   },
+  heartIcon: {marginRight: 25},
 });

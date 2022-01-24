@@ -1,26 +1,19 @@
 import React, {FC} from 'react';
-import {TopBar} from '../../reusableComponents/TopBar/TopBar';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {SearchBar} from '../../reusableComponents/SearchBar/SearchBar';
 import {ProductsList} from './components/ProductsList';
-import BurgerMenuIcon from '../../../icons/BurgerMenuIcon.svg';
-import BucketIcon from '../../../icons/BucketIcon.svg';
-import {IProduct} from './react-native-src/pages/Main/components/Product';
+import {RootStackParamList} from '../../navigation/MainStackNavigation';
 
-interface IMainScreen {
-  products: IProduct[];
-}
+type MainScreenRouteProps = NativeStackScreenProps<
+  RootStackParamList,
+  'MainScreen'
+>;
 
-export const MainScreen: FC<IMainScreen> = props => {
-  const {products} = props;
+export const MainScreen: FC<MainScreenRouteProps> = () => {
   return (
     <>
-      <TopBar
-        leftBlock={<BurgerMenuIcon />}
-        text="Ecommerce Store"
-        rightBlock={<BucketIcon />}
-      />
       <SearchBar />
-      <ProductsList products={products} />
+      <ProductsList />
     </>
   );
 };

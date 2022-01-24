@@ -9,7 +9,7 @@ export const SearchBar: FC = () => {
       <View style={styles.searchBar}>
         <SearchIcon />
         <TextInput
-          style={{padding: 0}}
+          style={styles.textInput}
           onChangeText={onChangeText}
           value={text}
         />
@@ -39,4 +39,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
   },
+  textInput: {padding: 0},
 });
