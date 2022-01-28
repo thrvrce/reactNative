@@ -18,6 +18,13 @@ export interface ICartItem {
   productOptions: Record<'color', string>;
 }
 
+export interface IGlobalModalErrorState {
+  showGlobalErrorModal: boolean;
+  actionButtonFunction: () => boolean | undefined | Promise<boolean>;
+  actionButtonText: string;
+  errorMessage: string;
+}
+
 interface IAppContext {
   products: IProduct[];
   cart: ICartItem[];
@@ -27,7 +34,18 @@ interface IAppContext {
   isProductsDataLoading: boolean;
   userLogged: boolean;
   changeUserLogged: React.Dispatch<React.SetStateAction<boolean>>;
+  globalModalErrorState: IGlobalModalErrorState;
+  changeGlobalErrorModalState: React.Dispatch<
+    React.SetStateAction<IGlobalModalErrorState>
+  >;
 }
+
+export const globalErrorModalDefaultState = {
+  showGlobalErrorModal: false,
+  actionButtonFunction: () => undefined,
+  actionButtonText: '',
+  errorMessage: ',',
+};
 
 export const AppContext = createContext<IAppContext>({
   products: [],
@@ -38,4 +56,6 @@ export const AppContext = createContext<IAppContext>({
   isProductsDataLoading: true,
   userLogged: false,
   changeUserLogged: () => {},
+  globalModalErrorState: globalErrorModalDefaultState,
+  changeGlobalErrorModalState: () => {},
 });

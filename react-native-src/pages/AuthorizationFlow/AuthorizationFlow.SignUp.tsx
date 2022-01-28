@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
   signUpButton: {
     height: 40,
     minWidth: 335,
+    borderRadius: 4,
+    alignSelf: 'center',
   },
   signInText: {
     color: '#00A8F3',

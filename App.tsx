@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {AppContext} from './react-native-src/AppContext/AppContext';
 import {useGetAppContext} from './react-native-src/AppContext/useGetAppContext';
 import {AppDrawerNavigation} from './react-native-src/navigation/AppDrawerNavigation';
+import {GlobalErrorModal} from './react-native-src/errorHandling/GlobalErrorModal';
 
 const App: FC = () => {
   const appContext = useGetAppContext();
@@ -15,6 +16,7 @@ const App: FC = () => {
           <NavigationContainer>
             <AppDrawerNavigation />
           </NavigationContainer>
+          <GlobalErrorModal />
         </AppContext.Provider>
       </View>
     </SafeAreaView>
