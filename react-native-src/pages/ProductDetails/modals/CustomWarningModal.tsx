@@ -32,7 +32,7 @@ export const CustomWarningModal: FC<ICustomWarningModal> = props => {
             <Button
               title="LOGIN"
               color="#008ACE"
-              onPress={() => props.navigation.navigate('ProductDetails')}
+              onPress={() => props.navigation.navigate('Login')}
             />
           </View>
           <View

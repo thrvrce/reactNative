@@ -7,7 +7,7 @@ export function useAddToCartHandler<
   const {userLogged, changeCart} = useContext(AppContext);
 
   const memoisedAddToCartHandler = useCallback(() => {
-    if (userLogged) {
+    if (!userLogged) {
       navigation.navigate('WarningModal');
     } else if (!selectedColor) {
       // on design mockup, if product color was not specified, should redirect to error modal
