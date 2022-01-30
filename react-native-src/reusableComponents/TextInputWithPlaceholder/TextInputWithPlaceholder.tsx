@@ -39,10 +39,7 @@ export const TextInputWithPlaceholder: FC<
   return (
     <View style={[styles.componentWrapper, wrapperStyles]}>
       <TextInput
-        style={{
-          ...textStyles.commonText,
-          ...styles.textInput,
-        }}
+        style={[textStyles.commonText, styles.textInput]}
         keyboardType={keyboardType}
         onChangeText={onChangeText}
         onFocus={() => changeFocusState(true)}
@@ -50,20 +47,26 @@ export const TextInputWithPlaceholder: FC<
         value={text}
       />
       <Animated.View
-        style={{
-          ...styles.placeholderWrapper,
-          zIndex: showPlaceholderAtTop ? 20 : 10,
-          translateY: placeholderAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: [10, -10],
-          }),
-        }}>
+        style={[
+          styles.placeholderWrapper,
+          {
+            zIndex: showPlaceholderAtTop ? 20 : 10,
+            translateY: placeholderAnimation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [10, -10],
+            }),
+          },
+        ]}>
         <Animated.Text
-          style={{
-            ...textStyles.commonText,
-            ...styles.placeholderText,
-            color: showPlaceholderAtTop ? 'rgba(0,0,0, 1)' : 'rgba(0,0,0, 0.5)',
-          }}>
+          style={[
+            textStyles.commonText,
+            styles.placeholderText,
+            {
+              color: showPlaceholderAtTop
+                ? 'rgba(0,0,0, 1)'
+                : 'rgba(0,0,0, 0.5)',
+            },
+          ]}>
           {placeholder}
         </Animated.Text>
       </Animated.View>

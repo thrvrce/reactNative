@@ -31,11 +31,7 @@ const AuthorizationFlowSignUp: FC<NativeStackHeaderProps> = () => {
       <KeyboardAvoidingView
         behavior="position"
         keyboardVerticalOffset={keyboardVerticalOffset}>
-        <Text
-          style={{
-            ...textStyles.commonText,
-            ...styles.title,
-          }}>
+        <Text style={[textStyles.commonText, styles.title]}>
           Ecomerce Store
         </Text>
         <TextInputWithPlaceholder
@@ -63,10 +59,7 @@ const AuthorizationFlowSignUp: FC<NativeStackHeaderProps> = () => {
         submitHandler={submitHandler}
       />
       <Text
-        style={{
-          ...textStyles.commonText,
-          ...styles.signInText,
-        }}
+        style={[textStyles.commonText, styles.signInText]}
         onPress={undefined}>
         Already have account? Sign In
       </Text>

@@ -74,10 +74,10 @@ export const AnimatedErrorCross: FC<IAnimatedErrorCross> = props => {
 
   return (
     <Animated.View
-      style={{
-        ...styles.wrapper,
-        transform: [{translateX: shakeAnimation}, {scale: 0.8}],
-      }}
+      style={[
+        styles.wrapper,
+        {transform: [{translateX: shakeAnimation}, {scale: 0.8}]},
+      ]}
       ref={currentComponentRef}>
       <View style={styles.linesContainer}>
         <View
