@@ -6,18 +6,12 @@ import {
   StyleProp,
   ViewStyle,
   View,
+  TextInputProps,
 } from 'react-native';
 import {textStyles} from '../../reusableStyles/textStyles';
 
-interface TextInputWithPlaceholderProps {
-  placeholder?: string;
-  keyboardType?:
-    | 'default'
-    | 'number-pad'
-    | 'decimal-pad'
-    | 'numeric'
-    | 'email-address'
-    | 'phone-pad';
+interface TextInputWithPlaceholderProps
+  extends Pick<TextInputProps, 'keyboardType' | 'placeholder'> {
   wrapperStyles?: StyleProp<ViewStyle>;
 }
 
