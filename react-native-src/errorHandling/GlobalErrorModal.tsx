@@ -38,7 +38,7 @@ export const GlobalErrorModal: FC = () => {
   return (
     <Modal
       animationType="slide"
-      transparent={false}
+      transparent={true}
       visible={showGlobalErrorModal}
       onRequestClose={resetGlobalErrorModalState}>
       <View style={styles.centeredView}>
