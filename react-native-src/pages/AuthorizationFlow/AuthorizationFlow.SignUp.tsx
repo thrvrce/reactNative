@@ -1,6 +1,5 @@
 import React, {FC, useState} from 'react';
 import {
-  SafeAreaView,
   Text,
   StyleSheet,
   ScrollView,
@@ -28,52 +27,50 @@ const AuthorizationFlowSignUp: FC<NativeStackHeaderProps> = () => {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-        <KeyboardAvoidingView
-          behavior="position"
-          keyboardVerticalOffset={keyboardVerticalOffset}>
-          <Text
-            style={{
-              ...textStyles.commonText,
-              ...styles.title,
-            }}>
-            Ecomerce Store
-          </Text>
-          <TextInputWithPlaceholder
-            placeholder="Full Name"
-            wrapperStyles={{marginBottom: 25}}
-          />
-          <TextInputWithPlaceholder
-            placeholder="Email Address"
-            wrapperStyles={{marginBottom: 25}}
-          />
-          <TextInputWithPlaceholder
-            placeholder="Password"
-            wrapperStyles={{marginBottom: 25}}
-          />
-          <TextInputWithPlaceholder
-            placeholder="Confirm Password"
-            wrapperStyles={{marginBottom: 30}}
-          />
-        </KeyboardAvoidingView>
-
-        <AnimatedSubmitButton
-          state={submitButtonState}
-          initialStateText="sign up"
-          errorStateText="Oops! Try Again"
-          submitHandler={submitHandler}
-        />
+    <ScrollView contentContainerStyle={styles.contentContainerStyle}>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={keyboardVerticalOffset}>
         <Text
           style={{
             ...textStyles.commonText,
-            ...styles.signInText,
-          }}
-          onPress={undefined}>
-          Already have account? Sign In
+            ...styles.title,
+          }}>
+          Ecomerce Store
         </Text>
-      </ScrollView>
-    </SafeAreaView>
+        <TextInputWithPlaceholder
+          placeholder="Full Name"
+          wrapperStyles={{marginBottom: 25}}
+        />
+        <TextInputWithPlaceholder
+          placeholder="Email Address"
+          wrapperStyles={{marginBottom: 25}}
+        />
+        <TextInputWithPlaceholder
+          placeholder="Password"
+          wrapperStyles={{marginBottom: 25}}
+        />
+        <TextInputWithPlaceholder
+          placeholder="Confirm Password"
+          wrapperStyles={{marginBottom: 30}}
+        />
+      </KeyboardAvoidingView>
+
+      <AnimatedSubmitButton
+        state={submitButtonState}
+        initialStateText="sign up"
+        errorStateText="Oops! Try Again"
+        submitHandler={submitHandler}
+      />
+      <Text
+        style={{
+          ...textStyles.commonText,
+          ...styles.signInText,
+        }}
+        onPress={undefined}>
+        Already have account? Sign In
+      </Text>
+    </ScrollView>
   );
 };
 

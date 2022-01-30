@@ -1,6 +1,5 @@
 import React, {FC, useState, useRef, useEffect} from 'react';
 import {
-  SafeAreaView,
   TextInput,
   Animated,
   StyleSheet,
@@ -44,41 +43,37 @@ export const TextInputWithPlaceholder: FC<
   }, [showPlaceholderAtTop, placeholderAnimation]);
 
   return (
-    <SafeAreaView>
-      <View style={[styles.componentWrapper, wrapperStyles]}>
-        <TextInput
+    <View style={[styles.componentWrapper, wrapperStyles]}>
+      <TextInput
+        style={{
+          ...textStyles.commonText,
+          ...styles.textInput,
+        }}
+        keyboardType={keyboardType}
+        onChangeText={onChangeText}
+        onFocus={() => changeFocusState(true)}
+        onBlur={() => changeFocusState(false)}
+        value={text}
+      />
+      <Animated.View
+        style={{
+          ...styles.placeholderWrapper,
+          zIndex: showPlaceholderAtTop ? 20 : 10,
+          translateY: placeholderAnimation.interpolate({
+            inputRange: [0, 1],
+            outputRange: [10, -10],
+          }),
+        }}>
+        <Animated.Text
           style={{
             ...textStyles.commonText,
-            ...styles.textInput,
-          }}
-          keyboardType={keyboardType}
-          onChangeText={onChangeText}
-          onFocus={() => changeFocusState(true)}
-          onBlur={() => changeFocusState(false)}
-          value={text}
-        />
-        <Animated.View
-          style={{
-            ...styles.placeholderWrapper,
-            zIndex: showPlaceholderAtTop ? 20 : 10,
-            translateY: placeholderAnimation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [10, -10],
-            }),
+            ...styles.placeholderText,
+            color: showPlaceholderAtTop ? 'rgba(0,0,0, 1)' : 'rgba(0,0,0, 0.5)',
           }}>
-          <Animated.Text
-            style={{
-              ...textStyles.commonText,
-              ...styles.placeholderText,
-              color: showPlaceholderAtTop
-                ? 'rgba(0,0,0, 1)'
-                : 'rgba(0,0,0, 0.5)',
-            }}>
-            {placeholder}
-          </Animated.Text>
-        </Animated.View>
-      </View>
-    </SafeAreaView>
+          {placeholder}
+        </Animated.Text>
+      </Animated.View>
+    </View>
   );
 };
 
