@@ -1,46 +1,69 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {
   SafeAreaView,
   Text,
   StyleSheet,
   ScrollView,
-  Button,
-  View,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {NativeStackHeaderProps} from '@react-navigation/native-stack';
 import {textStyles} from '../../reusableStyles/textStyles';
 import {TextInputWithPlaceholder} from '../../reusableComponents/TextInputWithPlaceholder/TextInputWithPlaceholder';
+import {AnimatedSubmitButton} from './AnimatedSubmitButton/AnimatedSubmitButton';
+import {AnimatedSubmitButtonState} from './AnimatedSubmitButton/AnimatedSubmitButtonTypes';
 
 const AuthorizationFlowSignUp: FC<NativeStackHeaderProps> = () => {
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 40 : 0;
+
+  // mock
+  const [submitButtonState, changeSubmitButtonState] =
+    useState<AnimatedSubmitButtonState>(AnimatedSubmitButtonState.initial);
+
+  const submitHandler = () => {
+    changeSubmitButtonState(AnimatedSubmitButtonState.pending);
+    setTimeout(() => {
+      changeSubmitButtonState(AnimatedSubmitButtonState.error);
+    }, 3000);
+  };
+
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.contentContainerStyle}>
-        <Text
-          style={{
-            ...textStyles.commonText,
-            ...styles.title,
-          }}>
-          Ecomerce Store
-        </Text>
-        <TextInputWithPlaceholder
-          placeholder="Full Name"
-          wrapperStyles={{marginBottom: 25}}
+        <KeyboardAvoidingView
+          behavior="position"
+          keyboardVerticalOffset={keyboardVerticalOffset}>
+          <Text
+            style={{
+              ...textStyles.commonText,
+              ...styles.title,
+            }}>
+            Ecomerce Store
+          </Text>
+          <TextInputWithPlaceholder
+            placeholder="Full Name"
+            wrapperStyles={{marginBottom: 25}}
+          />
+          <TextInputWithPlaceholder
+            placeholder="Email Address"
+            wrapperStyles={{marginBottom: 25}}
+          />
+          <TextInputWithPlaceholder
+            placeholder="Password"
+            wrapperStyles={{marginBottom: 25}}
+          />
+          <TextInputWithPlaceholder
+            placeholder="Confirm Password"
+            wrapperStyles={{marginBottom: 30}}
+          />
+        </KeyboardAvoidingView>
+
+        <AnimatedSubmitButton
+          state={submitButtonState}
+          initialStateText="sign up"
+          errorStateText="Oops! Try Again"
+          submitHandler={submitHandler}
         />
-        <TextInputWithPlaceholder
-          placeholder="Email Address"
-          wrapperStyles={{marginBottom: 25}}
-        />
-        <TextInputWithPlaceholder
-          placeholder="Password"
-          wrapperStyles={{marginBottom: 25}}
-        />
-        <TextInputWithPlaceholder
-          placeholder="Confirm Password"
-          wrapperStyles={{marginBottom: 30}}
-        />
-        <View style={styles.signUpButton}>
-          <Button title="SIGN UP" color="#008ACE" onPress={undefined} />
-        </View>
         <Text
           style={{
             ...textStyles.commonText,
@@ -72,11 +95,6 @@ const styles = StyleSheet.create({
     width: 180,
     marginTop: 70,
     marginBottom: 70,
-  },
-  signUpButton: {
-    height: 40,
-    minWidth: 335,
-    borderRadius: 4,
     alignSelf: 'center',
   },
   signInText: {

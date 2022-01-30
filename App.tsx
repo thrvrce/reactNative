@@ -1,10 +1,15 @@
 import React, {FC} from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet, NativeModules} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {AppContext} from './react-native-src/AppContext/AppContext';
 import {useGetAppContext} from './react-native-src/AppContext/useGetAppContext';
 import {AppDrawerNavigation} from './react-native-src/navigation/AppDrawerNavigation';
 import {GlobalErrorModal} from './react-native-src/errorHandling/GlobalErrorModal';
+
+const {UIManager} = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 const App: FC = () => {
   const appContext = useGetAppContext();
