@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flex: 1,
     height: '100%',
-    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',

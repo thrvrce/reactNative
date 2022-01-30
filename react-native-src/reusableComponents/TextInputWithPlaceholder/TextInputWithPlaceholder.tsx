@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
   placeholderWrapper: {
     backgroundColor: 'white',
     position: 'absolute',
-    display: 'flex',
     justifyContent: 'center',
     marginLeft: 15,
     paddingLeft: 4,

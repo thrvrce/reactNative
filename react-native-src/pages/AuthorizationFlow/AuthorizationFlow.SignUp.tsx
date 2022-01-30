@@ -81,7 +81,6 @@ export default AuthorizationFlowSignUp;
 
 const styles = StyleSheet.create({
   contentContainerStyle: {
-    display: 'flex',
     alignItems: 'center',
     backgroundColor: 'white',
     height: '100%',

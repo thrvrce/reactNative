@@ -110,7 +110,6 @@ export const AnimatedSubmitButton: FC<IAnimatedSubmitButton> = props => {
 
 const styles = StyleSheet.create({
   processStatusWrapper: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
