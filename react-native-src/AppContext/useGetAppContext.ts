@@ -1,5 +1,12 @@
 import {useState, useMemo} from 'react';
-import {IProduct, IProductOptions, ICartItem} from './AppContext';
+import {
+  IProduct,
+  IProductOptions,
+  ICartItem,
+  IGlobalModalErrorState,
+  globalErrorModalDefaultState,
+} from './AppContext';
+import {isError} from '../utils/typeGuards';
 
 export const useGetAppContext = () => {
   const [isProductsDataLoading, setProductsDataLoadingStatus] = useState(true);
@@ -9,11 +16,20 @@ export const useGetAppContext = () => {
   });
   const [cart, changeCart] = useState<ICartItem[]>([]);
   const [userLogged, changeUserLogged] = useState(false);
+  const [globalModalErrorState, changeGlobalErrorModalState] =
+    useState<IGlobalModalErrorState>(globalErrorModalDefaultState);
   const getProducts = async () => {
     try {
       const rawResponse = await fetch(
         'https://rn-mentoring.herokuapp.com/api/v2/storefront/products',
       );
+
+      if (rawResponse.status >= 400) {
+        throw new Error(
+          `Error while fetching products!\n Status code ${rawResponse.status}`,
+        );
+      }
+
       const response = await rawResponse.json();
       const productsData: IProduct[] = response.data.map(
         (productDataFromResponse: any) => {
@@ -45,17 +61,13 @@ export const useGetAppContext = () => {
         );
       setProducts(productsData);
       setProductOptions(optionsData);
+      return {status: true, message: ''};
     } catch (err) {
-      const isError = (err: any): err is Error => {
-        if (err.message) {
-          return true;
-        }
-        return false;
-      };
-
+      let errMessage = '';
       if (isError(err)) {
-        console.error(JSON.stringify(err.message));
+        errMessage = err.message;
       }
+      return {status: false, message: errMessage};
     } finally {
       setProductsDataLoadingStatus(false);
     }
@@ -65,15 +77,31 @@ export const useGetAppContext = () => {
     () => ({
       products,
       productOptions,
-      loadProductsData: () => {
+      loadProductsData: async () => {
         setProductsDataLoadingStatus(true);
-        getProducts();
+        const requestResult = await getProducts();
+        if (!requestResult.status) {
+          changeGlobalErrorModalState({
+            showGlobalErrorModal: true,
+            actionButtonFunction: async () => {
+              setProductsDataLoadingStatus(true);
+              const retryRequestResult = await getProducts();
+              return retryRequestResult.status;
+            },
+            actionButtonText: 'Reload products',
+            errorMessage: requestResult.message,
+          });
+          return requestResult;
+        }
+        return true;
       },
       isProductsDataLoading,
       cart,
       changeCart,
       userLogged,
       changeUserLogged,
+      globalModalErrorState,
+      changeGlobalErrorModalState,
     }),
     [
       isProductsDataLoading,
@@ -83,6 +111,8 @@ export const useGetAppContext = () => {
       changeCart,
       userLogged,
       changeUserLogged,
+      globalModalErrorState,
+      changeGlobalErrorModalState,
     ],
   );
 
