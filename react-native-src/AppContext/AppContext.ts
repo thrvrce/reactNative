@@ -27,6 +27,7 @@ export interface IGlobalModalErrorState {
 
 interface IAppContext {
   products: IProduct[];
+  setContextProducts: React.Dispatch<React.SetStateAction<IProduct[]>>;
   cart: ICartItem[];
   changeCart: React.Dispatch<React.SetStateAction<ICartItem[]>>;
   productOptions: IProductOptions;
@@ -49,6 +50,7 @@ export const globalErrorModalDefaultState = {
 
 export const AppContext = createContext<IAppContext>({
   products: [],
+  setContextProducts: () => {},
   cart: [],
   changeCart: () => {},
   productOptions: {colors: []},
