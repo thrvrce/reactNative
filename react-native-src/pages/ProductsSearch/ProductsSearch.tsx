@@ -13,6 +13,7 @@ const getFilteredProducts = async (
   productsSetter: React.Dispatch<React.SetStateAction<IProduct[]>>,
   requestActivityStatusSetter: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
+  console.log('getFilteredProducts');
   try {
     requestActivityStatusSetter(true);
     const nameFilters = '?filter[name]=' + nameFilterString;
@@ -42,7 +43,7 @@ export const ProductsSearch: FC = () => {
       );
       return productsToInsert.length
         ? [...existingProducts, ...productsToInsert]
-        : existingProducts;
+        : [...existingProducts];
     });
   }, [retrievedFilteredPRoducts, setContextProducts]);
 
