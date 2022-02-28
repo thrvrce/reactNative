@@ -7,10 +7,15 @@ import {
   globalErrorModalDefaultState,
 } from './AppContext';
 import {isError} from '../utils/typeGuards';
+import {getRequest, apiPath, productsResource} from '../utils/http.service';
+import {
+  getProductsDataFromResponse,
+  fillOPtionsDataColor,
+} from '../utils/productUtils';
 
 export const useGetAppContext = () => {
   const [isProductsDataLoading, setProductsDataLoadingStatus] = useState(true);
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const [products, setContextProducts] = useState<IProduct[]>([]);
   const [productOptions, setProductOptions] = useState<IProductOptions>({
     colors: [],
   });
@@ -20,47 +25,15 @@ export const useGetAppContext = () => {
     useState<IGlobalModalErrorState>(globalErrorModalDefaultState);
   const getProducts = async () => {
     try {
-      const rawResponse = await fetch(
-        'https://rn-mentoring.herokuapp.com/api/v2/storefront/products',
-      );
-
-      if (rawResponse.status >= 400) {
-        throw new Error(
-          `Error while fetching products!\n Status code ${rawResponse.status}`,
-        );
-      }
-
-      const response = await rawResponse.json();
-      const productsData: IProduct[] = response.data.map(
-        (productDataFromResponse: any) => {
-          const {id, attributes} = productDataFromResponse;
-          const {name, description, price, compare_at_price} = attributes;
-
-          return {
-            id,
-            name,
-            description,
-            imgSrc: 'https://picsum.photos',
-            price: Number(price),
-            // price: Math.round(Number(price) * Math.random()), // uncomment for refresh testing
-            compareAtPrice: Number(compare_at_price ?? price),
-          };
-        },
-      );
+      const response = await getRequest(apiPath + productsResource);
+      const productsData = getProductsDataFromResponse(response.data);
       const optionsData: IProductOptions = {
-        colors: [],
+        colors: fillOPtionsDataColor(response?.meta?.filters?.option_types),
       };
 
-      optionsData.colors = response.meta.filters.option_types
-        .find((optionType: {name: string}) => optionType.name === 'color')
-        .option_values.map(
-          ({name, presentation}: {name: string; presentation: string}) => ({
-            name,
-            presentation,
-          }),
-        );
-      setProducts(productsData);
+      setContextProducts(productsData);
       setProductOptions(optionsData);
+
       return {status: true, message: ''};
     } catch (err) {
       let errMessage = '';
@@ -76,6 +49,7 @@ export const useGetAppContext = () => {
   const appContext = useMemo(
     () => ({
       products,
+      setContextProducts,
       productOptions,
       loadProductsData: async () => {
         setProductsDataLoadingStatus(true);
@@ -113,6 +87,7 @@ export const useGetAppContext = () => {
       changeUserLogged,
       globalModalErrorState,
       changeGlobalErrorModalState,
+      setContextProducts,
     ],
   );
 

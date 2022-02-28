@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Button, View} from 'react-native';
+import {Button, View, StyleSheet} from 'react-native';
 import {CustomModal} from '../../../reusableComponents/CustomModal/CustomModal';
 import WarningIcon from '../../../reusableComponents/CustomModal/icons/WarningIcon.svg';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -17,29 +17,15 @@ export const CustomWarningModal: FC<ICustomWarningModal> = props => {
       title="Login To Continue"
       description="Please login to add product in your cart"
       controls={
-        <View
-          style={{
-            width: 270,
-            height: 40,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <View
-            style={{
-              width: 125,
-              height: 40,
-            }}>
+        <View style={styles.controlsWrapper}>
+          <View style={styles.buttonWrapper}>
             <Button
               title="LOGIN"
               color="#008ACE"
               onPress={() => props.navigation.navigate('Login')}
             />
           </View>
-          <View
-            style={{
-              width: 125,
-              height: 40,
-            }}>
+          <View style={styles.buttonWrapper}>
             <Button
               title="SIGN UP"
               color="#008ACE"
@@ -51,3 +37,16 @@ export const CustomWarningModal: FC<ICustomWarningModal> = props => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  controlsWrapper: {
+    width: 270,
+    height: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  buttonWrapper: {
+    width: 125,
+    height: 40,
+  },
+});

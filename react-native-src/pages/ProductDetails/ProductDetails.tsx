@@ -48,7 +48,7 @@ export const ProductDetails: FC<ProductDetailsRouteProps> = props => {
   );
 
   useInitialLoadProducts();
-
+  console.log(product);
   return (
     <>
       {product && (

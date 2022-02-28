@@ -1,16 +1,21 @@
-import React, {FC, useContext} from 'react';
-import {StyleSheet, RefreshControl, FlatList} from 'react-native';
+import React, {FC} from 'react';
+import {StyleSheet, FlatList} from 'react-native';
 import {Product} from './Product';
-import {AppContext, IProduct} from '../../../AppContext/AppContext';
-import {useInitialLoadProducts} from '../../../reusableHooks/useInitialLoadProducts';
+import {IProduct} from '../../../AppContext/AppContext';
+import {ProductListTypes} from './constants';
 
-export const ProductsList: FC = () => {
-  const {products, isProductsDataLoading, loadProductsData} =
-    useContext(AppContext);
+interface IProductsList {
+  listType: ProductListTypes;
+  products: IProduct[];
+  refreshControl?: JSX.Element;
+}
+
+export const ProductsList: FC<IProductsList> = props => {
+  const {listType, products, refreshControl} = props;
+
   const renderItem = ({item: product}: {item: IProduct}) => (
-    <Product {...product} />
+    <Product {...product} listType={listType} />
   );
-  useInitialLoadProducts();
 
   return (
     <FlatList
@@ -18,13 +23,8 @@ export const ProductsList: FC = () => {
       data={products}
       renderItem={renderItem}
       keyExtractor={item => item.id}
-      numColumns={2}
-      refreshControl={
-        <RefreshControl
-          refreshing={isProductsDataLoading}
-          onRefresh={loadProductsData}
-        />
-      }
+      numColumns={listType}
+      refreshControl={refreshControl}
     />
   );
 };
