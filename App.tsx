@@ -28,8 +28,10 @@ const App: FC = () => {
   );
 };
 
-export default App;
+export default App; // comment this line to display Storybook
 
 const styles = StyleSheet.create({
   appWrapper: {backgroundColor: '#FFF', height: '100%'},
 });
+
+// export {default} from './storybook'; // uncomment this line to display Storybook
