@@ -33,7 +33,7 @@ export const Product: FC<Product> = props => {
   }, [id, navigation]);
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} testID="Product">
       <View
         style={[
           styles.productWrapper,

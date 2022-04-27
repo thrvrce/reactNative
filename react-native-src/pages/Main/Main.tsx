@@ -1,7 +1,7 @@
 import React, {FC, useContext} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
-import {RefreshControl} from 'react-native';
+import {RefreshControl, View} from 'react-native';
 import {SearchBar} from '../../reusableComponents/SearchBar/SearchBar';
 import {ProductsList} from './components/ProductsList';
 import {RootStackParamList} from '../../navigation/MainStackNavigation';
@@ -21,7 +21,7 @@ export const MainScreen: FC<MainScreenRouteProps> = () => {
   useInitialLoadProducts();
 
   return (
-    <>
+    <View testID="MainScreen">
       <SearchBar
         redirectOnTouch={() => {
           navigation.navigate('ProductsSearch');
@@ -37,6 +37,6 @@ export const MainScreen: FC<MainScreenRouteProps> = () => {
           />
         }
       />
-    </>
+    </View>
   );
 };
