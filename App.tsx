@@ -1,6 +1,9 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import {View, SafeAreaView, StyleSheet, NativeModules} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import {AppContext} from './react-native-src/AppContext/AppContext';
 import {useGetAppContext} from './react-native-src/AppContext/useGetAppContext';
 import {AppDrawerNavigation} from './react-native-src/navigation/AppDrawerNavigation';
@@ -21,11 +24,37 @@ const App: FC = () => {
     // Crashes.generateTestCrash(); // mock crash
   }, []);
 
+  const navigationRef = useNavigationContainerRef();
+  const routeNameRef = useRef<string>();
+
   return (
     <SafeAreaView>
       <View style={styles.appWrapper}>
         <AppContext.Provider value={appContext}>
-          <NavigationContainer>
+          <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+              routeNameRef.current =
+                navigationRef.getCurrentRoute()?.name ??
+                'undefined current route name';
+              Analytics.trackEvent('onScreenOpen', {
+                screenName: routeNameRef.current,
+              });
+            }}
+            onStateChange={async () => {
+              const previousRouteName = routeNameRef.current;
+              const currentRouteName =
+                navigationRef.getCurrentRoute()?.name ??
+                'undefined current route name';
+
+              if (previousRouteName !== currentRouteName) {
+                Analytics.trackEvent('onScreenOpen', {
+                  screenName: currentRouteName,
+                });
+              }
+
+              routeNameRef.current = currentRouteName;
+            }}>
             <AppDrawerNavigation />
           </NavigationContainer>
           <GlobalErrorModal />
