@@ -18,13 +18,19 @@ export const Prices: FC<IPricesProps> = props => {
 
   return (
     <Text>
-      <Text style={[textStyles.commonText, styles.currentPriceText]}>
+      <Text
+        testID="currentPriceText"
+        style={[textStyles.commonText, styles.currentPriceText]}>
         {currentPriceText}
       </Text>
-      <Text style={[textStyles.commonText, styles.priceText]}>
+      <Text
+        testID="sourcePriceText"
+        style={[textStyles.commonText, styles.priceText]}>
         {sourcePriceText}
       </Text>
-      <Text style={[textStyles.commonText, styles.priceDiffPercentsText]}>
+      <Text
+        testID="priceDiffPercentsText"
+        style={[textStyles.commonText, styles.priceDiffPercentsText]}>
         {priceDiffPercentsText}
       </Text>
     </Text>

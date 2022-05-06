@@ -13,6 +13,7 @@ import {Prices} from '../../../reusableComponents/Prices/Prices';
 import {IProduct} from '../../../AppContext/AppContext';
 import {RootStackParamList} from '../../../navigation/MainStackNavigation';
 import {ProductListTypes} from './constants';
+// import Crashes from 'appcenter-crashes';
 
 type ProductDetailsRouteProps = NativeStackScreenProps<
   RootStackParamList,
@@ -27,10 +28,12 @@ export const Product: FC<Product> = props => {
   const navigation = useNavigation<ProductDetailsRouteProps['navigation']>();
   const window = useWindowDimensions();
   const onPress = useCallback(() => {
+    // Crashes.generateTestCrash(); // mock crash
     navigation.navigate('ProductDetailsNavigationStack', {productId: id});
   }, [id, navigation]);
+
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} testID="Product">
       <View
         style={[
           styles.productWrapper,

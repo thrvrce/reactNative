@@ -48,9 +48,8 @@ export const ProductDetails: FC<ProductDetailsRouteProps> = props => {
   );
 
   useInitialLoadProducts();
-  console.log(product);
   return (
-    <>
+    <View testID="ProductDetails">
       {product && (
         <>
           <ScrollView
@@ -122,7 +121,7 @@ export const ProductDetails: FC<ProductDetailsRouteProps> = props => {
           </View>
         </>
       )}
-    </>
+    </View>
   );
 };
 
