@@ -1,0 +1,40 @@
+name: Android Build QA flavor
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  android-build:
+    name: Android Build QA flavor
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Set up our JDK environment
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Make Gradlew Executable
+        run: cd android && chmod +x ./gradlew
+
+      - name: Generate App APK
+        run: |
+          cd android && ./gradlew assembleQa --no-daemon
+
+      - name: upload artefact to App Center
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: thrvrce/ReactNativeCourse
+          token: ${{secrets.APP_CENTER_TOKEN}}
+          group: QA
+          file: android/app/build/outputs/apk/qa/release/app-qa-release.apk
+          notifyTesters: true
+          debug: false

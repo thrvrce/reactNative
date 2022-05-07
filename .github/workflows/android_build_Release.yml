@@ -1,0 +1,40 @@
+name: Android Build release
+
+on:
+  push:
+    branches: ['release-v[0-9]+.[0-9]+']
+
+jobs:
+  android-build:
+    name: Android Build release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Set up our JDK environment
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Make Gradlew Executable
+        run: cd android && chmod +x ./gradlew
+
+      - name: Generate App APK
+        run: |
+          cd android && ./gradlew assembleProd --no-daemon
+
+      - name: upload artefact to App Center
+        uses: wzieba/AppCenter-Github-Action@v1
+        with:
+          appName: thrvrce/ReactNativeCourse
+          token: ${{secrets.APP_CENTER_TOKEN}}
+          group: PROD
+          file: android/app/build/outputs/apk/prod/release/app-prod-release.apk
+          notifyTesters: true
+          debug: false
