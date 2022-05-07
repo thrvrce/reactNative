@@ -126,6 +126,28 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 def nativeArchitectures = project.getProperties().get("reactNativeDebugArchitectures")
 
 android {
+  flavorDimensions "default"
+
+	productFlavors {
+      dev {
+          minSdkVersion rootProject.ext.minSdkVersion
+          applicationId 'com.com.reactnativecourse.dev'
+          targetSdkVersion rootProject.ext.targetSdkVersion
+          versionName 'dev 1.0.0'
+      }
+      prod {
+          minSdkVersion rootProject.ext.minSdkVersion
+          applicationId 'com.com.reactnativecourse.prod'
+          targetSdkVersion rootProject.ext.targetSdkVersion
+          versionName 'prod 1.0.0'
+      }
+      qa {
+          minSdkVersion rootProject.ext.minSdkVersion
+          applicationId 'com.com.reactnativecourse.qa'
+          targetSdkVersion rootProject.ext.targetSdkVersion
+          versionName 'qa 1.0.0'
+      }
+    }
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
