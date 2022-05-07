@@ -133,22 +133,19 @@ android {
           minSdkVersion rootProject.ext.minSdkVersion
           applicationId 'com.com.reactnativecourse.dev'
           targetSdkVersion rootProject.ext.targetSdkVersion
-          resValue "string", "app_name", "Dev flavor"
-          versionName: 'dev 1'
+          versionName 'dev 1.0.0'
       }
       prod {
           minSdkVersion rootProject.ext.minSdkVersion
           applicationId 'com.com.reactnativecourse.prod'
           targetSdkVersion rootProject.ext.targetSdkVersion
-          resValue "string", "app_name", "Prod flavor"
-          versionName: 'prod 1'
+          versionName 'prod 1.0.0'
       }
       qa {
           minSdkVersion rootProject.ext.minSdkVersion
           applicationId 'com.com.reactnativecourse.qa'
           targetSdkVersion rootProject.ext.targetSdkVersion
-          resValue "string", "app_name", "QA flavor"
-          versionName: 'qa 1'
+          versionName 'qa 1.0.0'
       }
     }
     ndkVersion rootProject.ext.ndkVersion
